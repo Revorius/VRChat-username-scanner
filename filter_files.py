@@ -11,7 +11,7 @@ def remove_duplicates_and_short_entries(input_file, output_file, min_length=4):
         filtered_lines = set(line.strip() for line in lines if '-' not in line and "'" not in line and '.' not in line and len(line.strip()) >= min_length)
 
         # Open the output file for writing (this will overwrite the file)
-        with open(output_file, 'w') as outfile:
+        with open(output_file, 'w', encoding='utf-8', errors='ignore') as outfile:
             # Write each unique line back to the output file
             for line in filtered_lines:
                 outfile.write(line + '\n')

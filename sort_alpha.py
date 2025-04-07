@@ -13,7 +13,7 @@ def sort_file_content(input_file, output_file):
         lines.sort()
         
     # Open the output file for writing
-    with open(output_file, 'w', encoding='utf-8') as file:
+    with open(output_file, 'w', encoding='utf-8', errors='ignore') as file:
         # Write the sorted lines to the output file
         for line in lines:
             file.write(line.lower() + '\n')
