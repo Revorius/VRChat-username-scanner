@@ -16,9 +16,10 @@ function walkDirectory(dir) {
     if (fs.lstatSync(fullPath).isDirectory()) {
       walkDirectory(fullPath); // Recursively walk the directory
     } else if (fs.lstatSync(fullPath).isFile()) {
-      if (fullPath.endsWith(".txt") && !fullPath.endsWith("LICENSE")) {
+      if (fullPath.includes(".txt") && !fullPath.includes("LICENSE")) {
         let ignored = false;
         for (let k = 0; k < ignore.length; k++) {
+            console.log(ignore[k]);
           if (fullPath.endsWith(ignore[k])) ignored = true;
         }
         if (ignored == false) {
@@ -103,4 +104,4 @@ async function execute(dir, online) {
   }
 }
 
-execute(__dirname + "/wordlists");
+execute(__dirname + "/results");
