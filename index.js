@@ -1,15 +1,15 @@
-const fs = require("fs");
-const axios = require("axios");
+const fs = require('fs');
+const axios = require('axios');
 const log = console.log;
 
 var tocheck_usernames = [];
 
-let files = fs.readdirSync("wordlists");
+let files = fs.readdirSync('wordlists');
 
 for (let i = 0; i < files.length; i++) {
-  if (files[i].endsWith(".txt")) {
+  if (files[i].endsWith('.txt')) {
     let names = fs
-      .readFileSync("wordlists/" + files[i], "utf8")
+      .readFileSync('wordlists/' + files[i], 'utf8')
       .split(/\r?\n|\r/);
     for (let k = 0; k < names.length; k++) {
       tocheck_usernames.push(names[k]);
@@ -18,14 +18,14 @@ for (let i = 0; i < files.length; i++) {
 }
 
 var skip = [
-  "results/available_usernames.txt",
-  "results/unavailable_usernames.txt",
+  'results/available_usernames.txt',
+  'results/unavailable_usernames.txt',
 ];
 var unclaimed = [];
 var skipped = 0;
 
 for (let i = 0; i < skip.length; i++) {
-  let selected_table = fs.readFileSync(skip[i], "utf8").split(/\r?\n|\r/);
+  let selected_table = fs.readFileSync(skip[i], 'utf8').split(/\r?\n|\r/);
   for (let index = 0; index < selected_table.length; index++) {
     let found = tocheck_usernames.indexOf(selected_table[index]);
     if (found > -1) {
@@ -66,8 +66,8 @@ async function execute() {
     let selected_username = tocheck_usernames[index].trim();
     let options = {
       url: `https://vrchat.com/api/1/auth/exists?username=${selected_username}&displayName=${selected_username}`,
-      method: "GET",
-      headers: { "User-Agent": "Mozilla/5.0" },
+      method: 'GET',
+      headers: { 'User-Agent': 'Mozilla/5.0' },
     };
 
     try {
@@ -76,8 +76,8 @@ async function execute() {
 
         if (api_response.userExists === false && api_response.nameOk === true) {
           fs.appendFile(
-            "results/available_usernames.txt",
-            selected_username + "\n",
+            'results/available_usernames.txt',
+            selected_username + '\n',
             (err) => {}
           );
           unclaimed.push(selected_username);
@@ -86,8 +86,8 @@ async function execute() {
           api_response.nameOk === false
         ) {
           fs.appendFile(
-            "results/unavailable_usernames.txt",
-            selected_username + "\n",
+            'results/unavailable_usernames.txt',
+            selected_username + '\n',
             (err) => {}
           );
         } else {
@@ -105,9 +105,9 @@ async function execute() {
         let hours = Math.floor(time_remaining / 60 / 60).toString();
         let minutes = Math.floor((time_remaining / 60) % 60).toString();
         let seconds = Math.floor(time_remaining % 60).toString();
-        if (hours.length == 1) hours = "0" + hours;
-        if (minutes.length == 1) minutes = "0" + minutes;
-        if (seconds.length == 1) seconds = "0" + seconds;
+        if (hours.length == 1) hours = '0' + hours;
+        if (minutes.length == 1) minutes = '0' + minutes;
+        if (seconds.length == 1) seconds = '0' + seconds;
         log(
           `Progress: ${((index / limit) * 100).toFixed(
             2

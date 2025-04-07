@@ -5,3 +5,6 @@ results/available_usernames.txt
 results/unavailable_usernames.txt
 wordlists/list.txt
 wordlists/brands.txt
+wordlists/cities.txt
+wordlists/countries.txt
+wordlists/names.txt
