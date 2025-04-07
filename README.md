@@ -5,12 +5,12 @@ This project checks the availability of usernames for VRChat using their API. Th
 ## Features
 
 - Loads usernames from `.txt` files located in the `wordlists` directory.
-- Skips usernames that are already listed in `available_usernames.txt` or `unavailable_usernames.txt`.
+- Skips usernames that are already listed in `available_usernames.txt` or `unavailable_usernames.txt` in the `results` directory.
 - Checks availability of usernames using VRChat's API.
 - Handles rate-limiting with exponential backoff to avoid being blocked.
 - Logs progress and estimated time remaining.
-- Writes available usernames to `available_usernames.txt`.
-- Writes unavailable usernames to `unavailable_usernames.txt`.
+- Writes available usernames to `available_usernames.txt` in the `results` directory.
+- Writes unavailable usernames to `unavailable_usernames.txt` in the `results` directory.
 
 ## Installation
 
@@ -34,7 +34,7 @@ npm install axios
 node index.js
 ```
 
-3. The script will process all usernames, and the results will be written to two files:
+3. The script will process all usernames, and the results will be written to two files in the `results` directory.:
 
 - `available_usernames.txt` for usernames that are available.
 - `unavailable_usernames.txt` for usernames that are already taken.
@@ -43,11 +43,10 @@ node index.js
 
 ## Files
 
-- `checkUsernames.js`: The main script that checks username availability.
+- `index.js`: The main script that checks username availability.
 - `wordlists/`: Directory containing text files with potential usernames.
-- `available_usernames.txt`: A file where available usernames are saved.
-- `unavailable_usernames.txt`: A file where unavailable usernames are saved.
+- `results/available_usernames.txt`: A file where available usernames are saved.
+- `results/unavailable_usernames.txt`: A file where unavailable usernames are saved.
 
 ## License
-
 This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.
