@@ -66,7 +66,7 @@ function dictionaryCheck(word) {
   return false;
 }
 
-async function execute(dir) {
+async function execute(dir, online) {
   walkDirectory(dir);
   for (let i = 0; i < queue.length; i++) {
     let path = queue[i];
@@ -81,7 +81,7 @@ async function execute(dir) {
       console.log(`Checking ${selected_username} [${k + 1}/${split.length}]`);
       if (dictionaryCheck(selected_username) == true) {
         result.push(selected_username);
-      } else {
+      } else if (online == true) {
         toCheckOnline.push(selected_username);
       }
     }
