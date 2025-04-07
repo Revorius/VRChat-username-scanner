@@ -17,7 +17,7 @@ for (let i = 0; i < files.length; i++) {
   }
 }
 
-var skip = ["available_usernames.txt", "unavailable_usernames.txt"];
+var skip = ["results/available_usernames.txt", "results/unavailable_usernames.txt"];
 var unclaimed = [];
 var skipped = 0;
 
@@ -74,7 +74,7 @@ async function execute() {
 
         if (api_response.userExists === false && api_response.nameOk === true) {
           fs.appendFile(
-            "available_usernames.txt",
+            "results/available_usernames.txt",
             selected_username + "\n",
             (err) => {}
           );
@@ -84,7 +84,7 @@ async function execute() {
           api_response.nameOk === false
         ) {
           fs.appendFile(
-            "unavailable_usernames.txt",
+            "results/unavailable_usernames.txt",
             selected_username + "\n",
             (err) => {}
           );
