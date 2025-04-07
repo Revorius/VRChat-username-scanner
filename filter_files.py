@@ -1,14 +1,14 @@
-import os;
+import os
 
 def remove_duplicates_and_short_entries(input_file, output_file, min_length=4):
     try:
         # Open the input file for reading
-        with open(input_file, 'r') as infile:
+        with open(input_file, 'r', encoding='utf-8', errors='ignore') as infile:
             # Read all lines
             lines = infile.readlines()
 
         # Filter out lines shorter than min_length and remove duplicates
-        filtered_lines = set(line.strip() for line in lines if len(line.strip()) >= min_length)
+        filtered_lines = set(line.strip() for line in lines if '-' not in line and "'" not in line and '.' not in line and len(line.strip()) >= min_length)
 
         # Open the output file for writing (this will overwrite the file)
         with open(output_file, 'w') as outfile:
@@ -23,17 +23,20 @@ def remove_duplicates_and_short_entries(input_file, output_file, min_length=4):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def process_directory(directory):
+    # Loop through all files and subdirectories in the current directory
+    for filename in os.listdir(directory):
+        filepath = os.path.join(directory, filename)
+        
+        # If it's a directory, call process_directory recursively
+        if os.path.isdir(filepath):
+            process_directory(filepath)
+        elif filename.endswith('.txt'):  # Only process .txt files
+            output_file = filepath  # Output file has the same name as the input
+            remove_duplicates_and_short_entries(filepath, output_file)
 
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Loop through all files in the current directory
-for filename in os.listdir(current_directory):
-    if filename.endswith('.txt'):  # Only process .txt files
-        input_file = os.path.join(current_directory, filename)
-        
-        # Create the output file name (same name as input file)
-        output_file = os.path.join(current_directory, filename)
-        
-        # Call the function for each .txt file
-        remove_duplicates_and_short_entries(input_file, output_file)
+# Start processing the current directory and its subdirectories
+process_directory(current_directory)
