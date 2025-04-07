@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "filter": "node dictionary_filter.js",
     "test": "echo \"No tests specified\" && exit 0",
     "lint": "eslint .",
     "prettify": "prettier --write ."

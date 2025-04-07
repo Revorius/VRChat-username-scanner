@@ -1,7 +1,7 @@
 node_modules
 .prettierrc
 .pretterignore
-available_usernames.txt
-unavailable_usernames.txt
+results/available_usernames.txt
+results/unavailable_usernames.txt
 wordlists/list.txt
 wordlists/brands.txt

@@ -49,4 +49,5 @@ node index.js
 - `results/unavailable_usernames.txt`: A file where unavailable usernames are saved.
 
 ## License
+
 This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.

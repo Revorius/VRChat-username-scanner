@@ -17,7 +17,10 @@ for (let i = 0; i < files.length; i++) {
   }
 }
 
-var skip = ["results/available_usernames.txt", "results/unavailable_usernames.txt"];
+var skip = [
+  "results/available_usernames.txt",
+  "results/unavailable_usernames.txt",
+];
 var unclaimed = [];
 var skipped = 0;
 
@@ -61,9 +64,8 @@ async function execute() {
 
   for (let index = start; index < start + limit; index++) {
     let selected_username = tocheck_usernames[index].trim();
-    let url = `https://vrchat.com/api/1/auth/exists?username=${selected_username}&displayName=${selected_username}`;
     let options = {
-      url: url,
+      url: `https://vrchat.com/api/1/auth/exists?username=${selected_username}&displayName=${selected_username}`,
       method: "GET",
       headers: { "User-Agent": "Mozilla/5.0" },
     };
