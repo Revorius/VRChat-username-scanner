@@ -19,8 +19,12 @@ function walkDirectory(dir) {
       if (fullPath.includes(".txt") && !fullPath.includes("LICENSE")) {
         let ignored = false;
         for (let k = 0; k < ignore.length; k++) {
-            console.log(ignore[k]);
-          if (fullPath.endsWith(ignore[k])) ignored = true;
+          if (fullPath.endsWith(ignore[k])) {
+            console.log(
+              `Ignoring ${fullPath} due to a match with ${ignore[k]}`
+            );
+            ignored = true;
+          }
         }
         if (ignored == false) {
           queue.push(fullPath);
@@ -104,4 +108,4 @@ async function execute(dir, online) {
   }
 }
 
-execute(__dirname + "/results");
+execute(__dirname);
