@@ -74,7 +74,7 @@ async function execute() {
     };
 
     try {
-      if (selected_name.length > 3) {
+      if (selected_name.length > 3 && selected_name.length < 16) {
         const api_response = await fetchWithRetry(options);
 
         if (api_response.userExists === false && api_response.nameOk === true) {
