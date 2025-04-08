@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "filter": "node dictionary_filter.js",
+    "sort": "python sort_alpha.py",
+    "filter_dup": "python filter_files.py",
     "test": "echo \"No tests specified\" && exit 0",
     "lint": "eslint .",
     "prettify": "prettier --write ."

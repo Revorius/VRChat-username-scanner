@@ -1,53 +1,76 @@
-# VRChat Username Availability Checker
+# VRChat Username Availability Toolkit
 
-This project checks the availability of usernames for VRChat using their API. The tool reads a list of potential usernames from text files in the `wordlists` directory and checks each one to see if it is available for registration.
+This toolkit helps you check the availability of usernames for VRChat using their API, and includes utilities to prepare, filter, and refine your wordlists. It supports both Python and JavaScript tools for cleaning, sorting, filtering, and scanning potential usernames.
 
 ## Features
 
-- Loads usernames from `.txt` files located in the `wordlists` directory.
-- Skips usernames that are already listed in `available_usernames.txt` or `unavailable_usernames.txt` in the `results` directory.
-- Checks availability of usernames using VRChat's API.
-- Handles rate-limiting with exponential backoff to avoid being blocked.
+- Load usernames from `.txt` files located in the `wordlists/` directory.
+- Filter short, invalid, or duplicate usernames using `filter_files.py`.
+- Alphabetically sort and normalize usernames with `sort_alpha.py`.
+- Filter usernames using a dictionary check with `dictionary_filter.js`.
+- Check availability of usernames using VRChat's public API via `index.js`.
+- Skip usernames already scanned by referencing `available_usernames.txt` and `unavailable_usernames.txt`.
+- Handles API rate-limiting with exponential backoff.
 - Logs progress and estimated time remaining.
-- Writes available usernames to `available_usernames.txt` in the `results` directory.
-- Writes unavailable usernames to `unavailable_usernames.txt` in the `results` directory.
+- Saves results in the `results/` directory.
 
 ## Installation
 
 1. Clone this repository or download the files.
 
-2. Ensure you have `Node.js` installed. You can download it from [here](https://nodejs.org/).
+2. Ensure you have both **Node.js** and **Python 3** installed.
 
-3. Install the necessary dependencies by running:
+3. Install dependencies:
 
-```bash
+For JavaScript tools:
+
+```
 npm install axios
 ```
 
+No additional libraries are required for Python scripts (they use built-in modules).
+
 ## Usage
 
-1. Place your username wordlists in the `wordlists/` directory. Each `.txt` file in that folder should contain one potential username per line.
+### 1. Prepare Wordlists
 
-2. Run the script:
+Run the Python scripts to clean and sort your wordlists:
+
+```
+python filter_files.py
+python sort_alpha.py
+```
+
+Optional: Filter by dictionary validity using JavaScript:
+
+```
+node dictionary_filter.js
+```
+
+### 2. Check Username Availability
+
+Place `.txt` wordlist files in the `wordlists/` directory, then run:
 
 ```
 node index.js
 ```
 
-3. The script will process all usernames, and the results will be written to two files in the `results` directory.:
+The script will:
 
-- `available_usernames.txt` for usernames that are available.
-- `unavailable_usernames.txt` for usernames that are already taken.
+- Check each username's availability
+- Save results in `results/available_usernames.txt` and `results/unavailable_usernames.txt`
+- Avoid re-checking previously scanned names
+- Show progress updates and estimated time remaining
 
-4. The script will show progress updates during the process, including an estimated time remaining for completion.
+## Files Overview
 
-## Files
-
-- `index.js`: The main script that checks username availability.
-- `wordlists/`: Directory containing text files with potential usernames.
-- `results/available_usernames.txt`: A file where available usernames are saved.
-- `results/unavailable_usernames.txt`: A file where unavailable usernames are saved.
+- `filter_files.py`: Cleans and filters usernames (length, symbols, duplicates)
+- `sort_alpha.py`: Alphabetically sorts cleaned usernames
+- `dictionary_filter.js`: Filters by real-word dictionaries (local + API)
+- `index.js`: Checks username availability on VRChat via API
+- `wordlists/`: Input text files, one username per line
+- `results/`: Output directory for available/unavailable username logs
 
 ## License
 
-This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPLv3 License – see the [LICENSE](LICENSE) file for details.
