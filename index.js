@@ -2,41 +2,44 @@ const fs = require("fs");
 const axios = require("axios");
 const log = console.log;
 
-var tocheck_usernames = [];
+const wordlists = fs.readdirSync("wordlists");
+const results = fs.readdirSync("results");
 
-let files = fs.readdirSync("wordlists");
-
-for (let i = 0; i < files.length; i++) {
-  if (files[i].endsWith(".txt")) {
-    let names = fs
-      .readFileSync("wordlists/" + files[i], "utf8")
-      .split(/\r?\n|\r/);
-    for (let k = 0; k < names.length; k++) {
-      tocheck_usernames.push(names[k]);
-    }
-  }
-}
-
-var skip = [
-  "results/available_usernames.txt",
-  "results/unavailable_usernames.txt",
-];
+var checked = [];
+var names = [];
 var unclaimed = [];
 var skipped = 0;
 
-for (let i = 0; i < skip.length; i++) {
-  let selected_table = fs.readFileSync(skip[i], "utf8").split(/\r?\n|\r/);
-  for (let index = 0; index < selected_table.length; index++) {
-    let found = tocheck_usernames.indexOf(selected_table[index]);
-    if (found > -1) {
-      tocheck_usernames.splice(found, 1);
-      skipped++;
+for (let i = 0; i < results.length; i++) {
+  let selected_file = "results/"+results[i];
+  let content = fs.readFileSync(selected_file, "utf8").split(/\r?\n|\r/);
+  for (let index = 0; index < content.length; index++) {
+    let result = content[index].trim();
+    checked.push(result);
+  }
+}
+
+for (let i = 0; i < wordlists.length; i++) {
+  let selected_file = wordlists[i];
+  if (selected_file.endsWith(".txt")) {
+    let content = fs
+      .readFileSync("wordlists/" + selected_file, "utf8")
+      .split(/\r?\n|\r/);
+    for (let k = 0; k < content.length; k++) {
+      let result = content[k].trim();
+      let found = checked.indexOf(result);
+      if (found == -1) {
+        names.push(result);
+      } else {
+        skipped++;
+      }
     }
   }
 }
 
 let start = 0;
-let limit = tocheck_usernames.length;
+let limit = names.length;
+
 log(
   `Scanning VRChat for ${
     limit - start
@@ -63,36 +66,36 @@ async function execute() {
   let time_start = Math.floor(new Date().getTime() / 1000);
 
   for (let index = start; index < start + limit; index++) {
-    let selected_username = tocheck_usernames[index].trim();
+    let selected_name = names[index].trim();
     let options = {
-      url: `https://vrchat.com/api/1/auth/exists?username=${selected_username}&displayName=${selected_username}`,
+      url: `https://vrchat.com/api/1/auth/exists?username=${selected_name}&displayName=${selected_name}`,
       method: "GET",
       headers: { "User-Agent": "Mozilla/5.0" },
     };
 
     try {
-      if (selected_username.length > 3) {
+      if (selected_name.length > 3) {
         const api_response = await fetchWithRetry(options);
 
         if (api_response.userExists === false && api_response.nameOk === true) {
           fs.appendFile(
             "results/available_usernames.txt",
-            selected_username + "\n",
+            selected_name + "\n",
             (err) => {}
           );
-          unclaimed.push(selected_username);
+          unclaimed.push(selected_name);
         } else if (
           api_response.userExists === true ||
           api_response.nameOk === false
         ) {
           fs.appendFile(
             "results/unavailable_usernames.txt",
-            selected_username + "\n",
+            selected_name + "\n",
             (err) => {}
           );
         } else {
           log(
-            `Unknown response for ${selected_username}: ${JSON.stringify(
+            `Unknown response for ${selected_name}: ${JSON.stringify(
               api_response
             )}`
           );
@@ -115,12 +118,12 @@ async function execute() {
         );
       }
     } catch (error) {
-      log(`Error checking username ${selected_username}: ${error.message}`);
+      log(`Error checking username ${selected_name}: ${error.message}`);
     }
   }
 
   log(
-    `Done, ${unclaimed.length} of ${tocheck_usernames.length} usernames are available. See available_usernames.txt for more info.`
+    `Done, ${unclaimed.length} of ${names.length} usernames are available. See available_usernames.txt for more info.`
   );
 }
 
